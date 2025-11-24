@@ -1,16 +1,19 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PvP Multiplayer — Canvas Classes</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<canvas id="game"></canvas>
-<div class="hint">WASD/Pfeile = bewegen • Leertaste = Space-Fähigkeit • Q/E/X = Fähigkeiten</div>
 <script src="/socket.io/socket.io.js"></script>
-<script src="scripts.js"></script>
-<script src="game.js"></script>
-</body>
-</html>
+<script>
+const socket = io();
+
+// Senden von Bewegungen
+function sendMovement(){
+    socket.emit('move',{x:player.x, y:player.y, dir:player.dir});
+}
+
+// Senden von Aktionen
+function sendAttack(type){
+    socket.emit('attack',{type:type});
+}
+
+// Spielerupdates vom Server
+let otherPlayers = {};
+socket.on('players', data => { otherPlayers = data; });
+socket.on('attack', data => { /* Spawn Projektile etc. */ });
+</script>
